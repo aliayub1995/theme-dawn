@@ -1,0 +1,164 @@
+{% doc %}
+  @prompt
+    Add custom CSS to the theme so that the header navigation menu item with the text "Sale" has a red background color, white text, some padding, and slightly rounded corners to make it stand out as a button-style link., Sale button is not aligned with the Contact, Home  and catalog button
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-sale-nav-styles-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  header-drawer a[href*="{{ block.settings.sale_link_url }}"],
+  .header__inline-menu a[href*="{{ block.settings.sale_link_url }}"] {
+    background-color: {{ block.settings.button_background_color }} !important;
+    color: {{ block.settings.button_text_color }} !important;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px !important;
+    border-radius: {{ block.settings.border_radius }}px !important;
+    font-weight: {{ block.settings.font_weight }};
+    transition: all 0.3s ease;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    line-height: 1.2 !important;
+    margin-top: {{ block.settings.vertical_offset }}px !important;
+  }
+
+  header-drawer a[href*="{{ block.settings.sale_link_url }}"]:hover,
+  .header__inline-menu a[href*="{{ block.settings.sale_link_url }}"]:hover {
+    background-color: {{ block.settings.button_hover_background_color }} !important;
+    color: {{ block.settings.button_hover_text_color }} !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    header-drawer a[href*="{{ block.settings.sale_link_url }}"] {
+      margin: 4px 0 !important;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-sale-nav-styles-{{ ai_gen_id }}" {{ block.shopify_attributes }}></div>
+
+{% schema %}
+{
+  "name": "Sale menu button style",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Target link"
+    },
+    {
+      "type": "text",
+      "id": "sale_link_url",
+      "label": "Sale link URL",
+      "default": "/collections/sale",
+      "info": "Enter the URL path of your Sale menu item (e.g., /collections/sale)"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Background color",
+      "default": "#dc2626"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Hover background color",
+      "default": "#b91c1c"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "vertical_offset",
+      "label": "Vertical alignment",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Adjust if button needs to align better with other menu items"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale menu button style"
+    }
+  ]
+}
+{% endschema %}
