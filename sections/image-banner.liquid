@@ -85,6 +85,9 @@
         endif
         assign desktop_image_class = image_class | append: ' banner__media-image--desktop'
         assign mobile_image_class = image_class | append: ' banner__media-image--mobile'
+        if section.settings.mobile_image != blank
+          assign mobile_image_height = section.settings.mobile_image.width | divided_by: section.settings.mobile_image.aspect_ratio
+        endif
         if section.settings.image_2 != blank and section.settings.stack_images_on_mobile
           assign sizes = stacked_sizes
         elsif section.settings.image_2 != blank
@@ -110,7 +113,7 @@
           | image_url: width: 2000
           | image_tag:
             width: section.settings.mobile_image.width,
-            height: section.settings.mobile_image.width | divided_by: section.settings.mobile_image.aspect_ratio,
+            height: mobile_image_height,
             class: mobile_image_class,
             sizes: '100vw',
             widths: '375, 550, 750, 1100, 1500, 1780, 2000',
