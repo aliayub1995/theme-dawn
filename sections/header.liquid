@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
+{{ 'header-promo-button.css' | asset_url | stylesheet_tag }}
+
 <style>
   header-drawer {
     justify-self: start;
@@ -180,15 +182,25 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- liquid
-      if section.settings.menu != blank
-        if section.settings.menu_type_desktop == 'dropdown'
-          render 'header-dropdown-menu'
-        elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
-        endif
-      endif
-    %}
+    {%- if section.settings.menu != blank -%}
+      {%- if section.settings.menu_type_desktop == 'dropdown' -%}
+        {% render 'header-dropdown-menu',
+          promo_enabled: section.settings.enable_promo_menu_item,
+          promo_menu_label: section.settings.promo_menu_label,
+          promo_bg_color: section.settings.promo_bg_color,
+          promo_text_color: section.settings.promo_text_color,
+          promo_animation: section.settings.promo_animation
+        %}
+      {%- elsif section.settings.menu_type_desktop != 'drawer' -%}
+        {% render 'header-mega-menu',
+          promo_enabled: section.settings.enable_promo_menu_item,
+          promo_menu_label: section.settings.promo_menu_label,
+          promo_bg_color: section.settings.promo_bg_color,
+          promo_text_color: section.settings.promo_text_color,
+          promo_animation: section.settings.promo_animation
+        %}
+      {%- endif -%}
+    {%- endif -%}
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
@@ -609,6 +621,55 @@
       "default": true,
       "label": "t:sections.header.settings.enable_customer_avatar.label",
       "info": "t:sections.header.settings.enable_customer_avatar.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_promo_menu_item",
+      "default": true,
+      "label": "Highlight one menu item as promo"
+    },
+    {
+      "type": "text",
+      "id": "promo_menu_label",
+      "default": "Sale",
+      "label": "Promo menu item label",
+      "info": "Must match the exact top menu text, for example Sale"
+    },
+    {
+      "type": "color",
+      "id": "promo_bg_color",
+      "default": "#DC143C",
+      "label": "Promo background color"
+    },
+    {
+      "type": "color",
+      "id": "promo_text_color",
+      "default": "#FFFFFF",
+      "label": "Promo text color"
+    },
+    {
+      "type": "select",
+      "id": "promo_animation",
+      "options": [
+        {
+          "value": "blink",
+          "label": "Blink"
+        },
+        {
+          "value": "pulse",
+          "label": "Pulse (glow effect)"
+        },
+        {
+          "value": "shake",
+          "label": "Shake"
+        },
+        {
+          "value": "none",
+          "label": "No animation"
+        }
+      ],
+      "default": "blink",
+      "label": "Promo animation"
     },
     {
       "type": "header",

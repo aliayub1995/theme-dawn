@@ -1,0 +1,73 @@
+/* Styles the existing menu item (e.g. "Sale") as promo button */
+.header__menu-item--promo {
+  background-color: var(--promo-bg, #dc143c);
+  color: var(--promo-text, #ffffff) !important;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1.4rem !important;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-inline-start: 0.5rem;
+}
+
+.header__menu-item--promo span,
+.header__menu-item--promo .header__active-menu-item {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.header__menu-item--promo:hover {
+  opacity: 0.92;
+}
+
+.header__menu-item--promo-blink {
+  animation: promoBlink 1.2s ease-in-out infinite;
+}
+
+.header__menu-item--promo-pulse {
+  animation: promoPulse 1.8s ease-in-out infinite;
+}
+
+.header__menu-item--promo-shake {
+  animation: promoShake 2s ease-in-out infinite;
+}
+
+@keyframes promoBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes promoPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes promoShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  2%,
+  6% {
+    transform: translateX(-2px);
+  }
+  4%,
+  8% {
+    transform: translateX(2px);
+  }
+  10%,
+  90% {
+    transform: translateX(0);
+  }
+}

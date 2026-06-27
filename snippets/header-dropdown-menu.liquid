@@ -8,13 +8,30 @@
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
+      {%- liquid
+        assign promo_label_normalized = promo_menu_label | default: 'Sale' | strip | downcase
+        assign promo_label_handle = promo_label_normalized | handleize
+        assign link_title_normalized = link.title | strip | downcase
+        assign link_title_handle = link_title_normalized | handleize
+        assign is_promo_link = false
+        if promo_enabled
+          if promo_label_normalized != blank and link_title_handle == promo_label_handle
+            assign is_promo_link = true
+          elsif promo_label_normalized != blank and link_title_normalized contains promo_label_normalized
+            assign is_promo_link = true
+          endif
+        endif
+      -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
             <details id="Details-HeaderMenu-{{ forloop.index }}">
               <summary
                 id="HeaderMenu-{{ link.handle }}"
-                class="header__menu-item list-menu__item link focus-inset"
+                class="header__menu-item list-menu__item link focus-inset{% if is_promo_link %} header__menu-item--promo header__menu-item--promo-{{ promo_animation | default: 'blink' }}{% endif %}"
+                {% if is_promo_link %}
+                  style="--promo-bg: {{ promo_bg_color | default: '#DC143C' }}; --promo-text: {{ promo_text_color | default: '#FFFFFF' }};"
+                {% endif %}
               >
                 <span
                   {%- if link.child_active %}
@@ -83,7 +100,10 @@
           <a
             id="HeaderMenu-{{ link.handle }}"
             href="{{ link.url }}"
-            class="header__menu-item list-menu__item link link--text focus-inset"
+            class="header__menu-item list-menu__item link link--text focus-inset{% if is_promo_link %} header__menu-item--promo header__menu-item--promo-{{ promo_animation | default: 'blink' }}{% endif %}"
+            {% if is_promo_link %}
+              style="--promo-bg: {{ promo_bg_color | default: '#DC143C' }}; --promo-text: {{ promo_text_color | default: '#FFFFFF' }};"
+            {% endif %}
             {% if link.current %}
               aria-current="page"
             {% endif %}
